@@ -5,7 +5,8 @@
   "main": "src/wine.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cross-env DEBUG=lofi:* nodemon ./src/wine.js"
+    "dev": "cross-env DEBUG=lofi:* nodemon ./src/wine.js",
+    "start": "cross-env DEBUG=lofi:* node ./src/wine.js"
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,8 @@
   "author": "Ngugi",
   "license": "ISC",
   "dependencies": {
-    "@sentry/node": "^6.1.0",
+    "@sentry/node": "^6.11.0",
+    "@sentry/tracing": "^6.11.0",
     "amqplib": "^0.6.0",
     "cors": "^2.8.5",
     "debug": "^4.3.1",

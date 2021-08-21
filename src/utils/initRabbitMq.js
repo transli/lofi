@@ -2,13 +2,13 @@
 const amqp = require('amqplib');
 const debugModule = require('debug');
 
-const log = debugModule("rabbitMq:index");
+const log = debugModule("lofi:rabbitMq");
 const retryInterval = 5000;
 const startRabbit = async (handler) => {
     let conn
     try {
       conn = await amqp.connect(process.env.RABBITMQ_URL || "amqp://guest:guest@localhost:5672");
-      log('rabbitMQ connected successfully')
+      log('rabbitMQ connected successfully');
     } catch (err) {
       console.error("Unable to connect to RabbitMQ: ", err);
       setTimeout(async () => await startRabbit(handler), retryInterval);

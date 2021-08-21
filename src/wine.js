@@ -12,7 +12,20 @@ const rooms = {};
 
 const log = debugModule("lofi:index");
 
+
 (async function() {
+  if(process.env.SENTRY_DSN){
+    Sentry.init({
+      dsn: process.env.SENTRY_DSN,
+    
+      enabled: !!process.env.SENTRY_DSN,
+    
+      // Set tracesSampleRate to 1.0 to capture 100%
+      // of transactions for performance monitoring.
+      // We recommend adjusting this value in production
+      tracesSampleRate: 1.0,
+    });
+  }
   log("starting mediasoup");
   let workers;
   try {
@@ -351,14 +364,15 @@ const log = debugModule("lofi:index");
       }
     },
 
-    ["remove_speaker"]: ({ room_id, peer_id }) => {
+    ["remove_speaker"]: ({ room_id, peer_id }, user_id, reply) => {
       if (room_id in rooms) {
         const peer = rooms[room_id].state[peer_id];
         peer?.producer?.close();
         peer?.sendTransport?.close();
       }
-    },
 
+      reply({user_id, act: "speaker_removed", dt: {room_id}})
+    },
   });
 
 })();
