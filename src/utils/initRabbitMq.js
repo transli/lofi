@@ -7,7 +7,7 @@ const retryInterval = 5000;
 const startRabbit = async (handler) => {
     let conn
     try {
-      conn = await amqp.connect(process.env.RABBITMQ_URL || "amqp://guest:guest@localhost:5672");
+      conn = await amqp.connect(process.env.RABBITMQ_URL || "amqp://guest:guest@127.0.0.1:5672");
       log('rabbitMQ connected successfully');
     } catch (err) {
       console.error("Unable to connect to RabbitMQ: ", err);

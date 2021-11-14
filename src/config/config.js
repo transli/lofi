@@ -53,7 +53,7 @@
       listenIps: [
         {
           ip: process.env.WEBRTC_LISTEN_IP || "127.0.0.1",
-          announcedIp: process.env.A_IP || "127.0.0.1",
+          announcedIp: process.env.A_IP || "0.0.0.0",
         },
         // { ip: "192.168.42.68", announcedIp: null },
         // { ip: '10.10.23.101', announcedIp: null },

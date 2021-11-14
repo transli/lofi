@@ -50,6 +50,34 @@ const log = debugModule("lofi:index");
   };
 
   await initRabbitMq({
+    ['@restartIce']: async ({room_id, peer_id, direction}, user_id, reply, errBack) => {
+      if (!rooms[room_id]?.state[peer_id]) {
+        errBack();
+        return;
+      }
+      const { state } = rooms[room_id];
+
+      const transport = direction === "recv"
+         ? state[peer_id]?.recvTransport
+         : state[peer_id]?.sendTransport;
+
+      if (!transport){
+        errBack();
+        return;
+      }
+
+      try {
+        const iceParameters = await transport.restartIce();
+        log("ice restart done", iceParameters);
+        reply({
+          act: `@ice_restart_${direction}_done`,
+          user_id,
+          dt: { room_id, iceParameters },
+        });
+      } catch (err) {
+        log("Restart ice failed ", err);
+      }
+    },
     ["@connect_transport"]: async (
       { room_id, dtlsParameters, peer_id, direction },
       user_id,
