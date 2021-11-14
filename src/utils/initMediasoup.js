@@ -1,15 +1,14 @@
 const mediasoup = require('mediasoup');
-const os = require('os');
 const config = require('../config/config');
 
 module.exports = async function () {
   const workers = [];
-  for (let i = 0; i < Object.keys(os.cpus()).length; i++) {
+  for (let i = 0; i < config.mediasoup.numWorkers; i++) {
     let worker = await mediasoup.createWorker({
-      logLevel: config.mediasoup.worker.logLevel,
-      logTags: config.mediasoup.worker.logTags,
-      rtcMinPort: config.mediasoup.worker.rtcMinPort,
-      rtcMaxPort: config.mediasoup.worker.rtcMaxPort,
+      logLevel: config.mediasoup.workerSettings.logLevel,
+      logTags: config.mediasoup.workerSettings.logTags,
+      rtcMinPort: config.mediasoup.workerSettings.rtcMinPort,
+      rtcMaxPort: config.mediasoup.workerSettings.rtcMaxPort,
     });
 
     worker.on("died", () => {
